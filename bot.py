@@ -430,8 +430,14 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "<b>Я вижу азарт в твоих глазах… продолжай.</b>",
     ]
 
+    prev = last_joke.get(uid)
+    available = [j for j in jokes if j != prev]
+
+    joke = random.choice(available) if available else random.choice(jokes)
+    last_joke[uid] = joke
+
     await msg.reply_text(
-        random.choice(jokes),
+        joke,
         parse_mode="HTML"
     )
 
