@@ -48,23 +48,6 @@ def e(eid: str) -> str:
     return f'<tg-emoji emoji-id="{eid}">◻</tg-emoji>'
 
 # ===== УТИЛИТЫ =====
-def extract_gift_name(link: str) -> str:
-    slug = link.rstrip("/").split("/")[-1]
-    slug = slug.replace("-", " ")
-    slug = re.sub(r"(\D)(\d+)$", r"\1 #\2", slug)
-    return slug.strip()
-
-def load_gifts():
-    global GIFTS
-    if GIFTS_FILE.exists():
-        GIFTS = json.loads(GIFTS_FILE.read_text(encoding="utf-8"))
-
-def save_gifts():
-    GIFTS_FILE.write_text(
-        json.dumps(GIFTS, ensure_ascii=False, indent=2),
-        encoding="utf-8"
-    )
-
 def log_winner(user, gift):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = (
@@ -79,7 +62,32 @@ def log_winner(user, gift):
         if WINNERS_FILE.exists() else line,
         encoding="utf-8"
     )
-    
+
+
+async def post_winner_to_channel(bot, user, gift):
+    # ссылка на пользователя
+    if user.username:
+        user_link = f"<a href='https://t.me/{user.username}'>@{user.username}</a>"
+    else:
+        user_link = f"<a href='tg://user?id={user.id}'>Победитель</a>"
+
+    text = (
+        f"{e(EMOJI_7)}{e(EMOJI_7)}{e(EMOJI_7)} <b>ДЖЕКПОТ ВЫПАЛ!</b>\n\n"
+        f"{e(EMOJI_TOP)} <b>Победитель:</b> {user_link}\n\n"
+        f"{e(EMOJI_NFT)} <b>Выигрыш:</b>\n"
+        f"🎁 <a href='{gift['link']}'><b>{gift['name']}</b></a>\n\n"
+        f"{e(EMOJI_BANK)} <b>Банк подарков:</b> {ADMIN_USERNAME}\n\n"
+        f"{e(EMOJI_PIN)} <i>Крути 🎰 — следующий пост может быть про тебя</i>"
+    )
+
+    await bot.send_message(
+        chat_id=INFO_CHANNEL_ID,
+        text=text,
+        parse_mode="HTML",
+        disable_web_page_preview=False
+    )
+
+
     # ===== УТИЛИТЫ ТУРНИРА =====
 def save_tournament(data):
     TOURNAMENT_FILE.write_text(
