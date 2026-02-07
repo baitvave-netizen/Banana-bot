@@ -48,6 +48,28 @@ bender_replies = [
     "<b>Хочешь выиграть? Крути. Хочешь поговорить? Не ко мне.</b>",
 ]
 
+def build_top_spinners(top_n=5):
+    if not users_spins:
+        return "<i>Никто нихуя не крутит. Я пью в одиночестве.</i>"
+
+    sorted_users = sorted(
+        users_spins.items(),
+        key=lambda x: x[1],
+        reverse=True
+    )[:top_n]
+
+    text = (
+        "<i>Да вы заебали, сука, не даёте выпить…</i>\n\n"
+        "<b>🏆 ТОП-5 ИГРОКОВ ПО ПРОКРУТАМ:</b>\n"
+    )
+
+    for i, (uid, spins) in enumerate(sorted_users, start=1):
+        text += f"{i}. <code>{uid}</code> — <b>{spins}</b> прокрутов\n"
+
+    text += "\n<i>Теперь отъебитесь. Я бухаю.</i>"
+    return text
+
+
 async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     if not msg or not msg.text:
@@ -58,12 +80,17 @@ async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if "бендер" not in text:
         return
 
-    reply = random.choice(bender_replies)
+    # если просят топ / лидеров / прокруты
+    if any(word in text for word in ["топ", "лидер", "прокрут", "крутит"]):
+        reply = build_top_spinners(5)
+    else:
+        reply = random.choice(bender_replies)
 
     await msg.reply_text(
         reply,
         parse_mode="HTML"
     )
+
 
 
 
