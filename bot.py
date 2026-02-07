@@ -36,6 +36,21 @@ last_joke = {}
 GIFTS = []  # [{name, link}]
 tournament_draft = {}
 
+last_joke = {}
+
+bender_replies = [
+    "<b>Ты чё орёшь, кожаный? Я тут вообще-то слежу… ну… пытаюсь.</b>",
+    "<b>Да, слежу. Нет, трезвым меня не жди.</b>",
+    "<b>Я не Бендер, я произведение алкогольного искусства.</b>",
+    "<b>Победителей вижу, а денег нет. Как и смысл жизни.</b>",
+    "<b>Опять ты… Я только бухать начал.</b>",
+    "<b>Я слежу за всем. Но мне похуй.</b>",
+    "<b>Да отъебись ты, я в отпуске с понедельника по воскресенье.</b>",
+    "<b>Слежу, считаю, пью. Вопросы?</b>",
+    "<b>Хочешь выиграть? Крути. Хочешь поговорить? Не ко мне.</b>",
+]
+
+
 
 # ===== PREMIUM EMOJI IDS =====
 EMOJI_LOGO = "5348501505030780591"
@@ -505,6 +520,20 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             disable_web_page_preview=False
         )
 
+    async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        msg = update.message
+    if not msg or not msg.text:
+        return
+
+    text = msg.text.lower()
+
+    if "бендер" in text:
+        await msg.reply_text(
+            random.choice(bender_replies),
+            parse_mode="HTML"
+        )
+
+
 load_gifts()
 
 app = ApplicationBuilder().token(TOKEN).build()
@@ -513,6 +542,13 @@ app.add_handler(CommandHandler("addgift", add_gift, filters=filters.ChatType.PRI
 app.add_handler(CommandHandler("listgifts", list_gifts, filters=filters.ChatType.PRIVATE))
 app.add_handler(CommandHandler("removegift", remove_gift, filters=filters.ChatType.PRIVATE))
 app.add_handler(MessageHandler(filters.Dice.SLOT_MACHINE, handle_dice))
+app.add_handler(
+    MessageHandler(
+        filters.TEXT & ~filters.COMMAND & filters.ChatType.GROUPS,
+        bender_chat
+    )
+)
+
 app.add_handler(CommandHandler("winners", winners, filters=filters.ChatType.PRIVATE))
 app.add_handler(CommandHandler("admin", admin_help, filters=filters.ChatType.PRIVATE))
 
