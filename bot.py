@@ -422,16 +422,19 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     users_spins.setdefault(uid, 0)
     users_spins[uid] += 1
     
-    if users_spins[uid] == 25:
+    if users_spins[uid] % 15 == 0:
         jokes = [
         "<b>Ну ты блять упёртый… крути давай, сейчас точно повезёт!</b>",
         "<b>Ты так крутишь, что автомату скоро станет неловко.</b>",
+        "<b>Ещё немного — и автомат сдастся первым.</b>",
+        "<b>Я вижу азарт в твоих глазах… продолжай.</b>",
     ]
 
     await msg.reply_text(
         random.choice(jokes),
         parse_mode="HTML"
     )
+
 
     if users_spins[uid] == 1:
         text = (
