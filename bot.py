@@ -36,8 +36,6 @@ last_joke = {}
 GIFTS = []  # [{name, link}]
 tournament_draft = {}
 
-last_joke = {}
-
 bender_replies = [
     "<b>Ты чё орёшь, кожаный? Я тут вообще-то слежу… ну… пытаюсь.</b>",
     "<b>Да, слежу. Нет, трезвым меня не жди.</b>",
@@ -49,6 +47,23 @@ bender_replies = [
     "<b>Слежу, считаю, пью. Вопросы?</b>",
     "<b>Хочешь выиграть? Крути. Хочешь поговорить? Не ко мне.</b>",
 ]
+
+async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = update.message
+    if not msg or not msg.text:
+        return
+
+    text = msg.text.lower()
+
+    if "бендер" not in text:
+        return
+
+    reply = random.choice(bender_replies)
+
+    await msg.reply_text(
+        reply,
+        parse_mode="HTML"
+    )
 
 
 
@@ -462,6 +477,8 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             disable_web_page_preview=True
         )
         return
+    
+
 
     # 🤖 ШУТКИ КАЖДЫЕ 15 ПРОКРУТОВ
     if users_spins[uid] % 15 == 0:
@@ -519,20 +536,6 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="HTML",
             disable_web_page_preview=False
         )
-
-    async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        msg = update.message
-    if not msg or not msg.text:
-        return
-
-    text = msg.text.lower()
-
-    if "бендер" in text:
-        await msg.reply_text(
-            random.choice(bender_replies),
-            parse_mode="HTML"
-        )
-
 
 load_gifts()
 
