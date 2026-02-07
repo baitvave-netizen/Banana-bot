@@ -432,12 +432,21 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await msg.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
         return
 
+    # ===== ДЖЕКПОТ =====
     if msg.dice.value == VALUE_777:
         if GIFTS:
             gift = random.choice(GIFTS)
             GIFTS.remove(gift)
             save_gifts()
+
             log_winner(msg.from_user, gift)
+
+            # 🔥 ПУБЛИКАЦИЯ В КАНАЛ
+            await post_winner_to_channel(
+                context.bot,
+                msg.from_user,
+                gift
+            )
 
             gift_text = (
                 f"<a href='{gift['link']}'>{gift['name']}</a>\n"
@@ -454,11 +463,12 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{e(EMOJI_BANK)} <b>Банк подарков — {ADMIN_USERNAME}</b>"
         )
 
-        await msg.reply_text(text, parse_mode="HTML", disable_web_page_preview=False)
+        await msg.reply_text(
+            text,
+            parse_mode="HTML",
+            disable_web_page_preview=False
+        )
 
-        
-
-# ===== ЗАПУСК =====
 load_gifts()
 
 app = ApplicationBuilder().token(TOKEN).build()
