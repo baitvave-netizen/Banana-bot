@@ -14,7 +14,7 @@ from telegram.ext import (
 )
 
 # ===== НАСТРОЙКИ =====
-TOKEN = "8555528597:AAGgHv9IH8Dv6cUoOWzDHkaD5FOy9KmWce4"
+TOKEN = "8529025317:AAFtVpp70nj0m-xNCAqn-z12mhWDYmC0Bp4"
 ADMIN_USERNAME = "@Anonveil"
 ADMIN_ID = 7162818793  # ← ВСТАВЬ СВОЙ user_id
 VALUE_777 = 64
@@ -206,7 +206,7 @@ async def admin_help(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     text = (
-    "<b>🛠 Админ-панель Banana BOT</b>\n"
+    "<b>🛠 Админ-панель GIFT DROP BOT</b>\n"
     "<i>Команды работают только в личных сообщениях</i>\n\n"
 
     "<b>🎁 ПОДАРКИ</b>\n"
@@ -385,7 +385,7 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if users_spins[uid] == 1:
         text = (
-            f"{e(EMOJI_LOGO)} <b>Banana</b> "
+            f"{e(EMOJI_LOGO)} <b>Добро пожаловать в GIFT DROP</b> "
             f"{e(EMOJI_7)}{e(EMOJI_7)}{e(EMOJI_7)}\n\n"
             "<b>Давай давай, крути крути — здесь всё решает удача. "
             "Один прокрут может изменить всё.</b>\n\n"
@@ -394,7 +394,9 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"получил NFT подарок до 15 000 {e(EMOJI_NFT)}.\n\n"
             f"{e(EMOJI_BANK)} <b>Банк подарков</b> — {ADMIN_USERNAME}. "
             "Может выпасть любой подарок, даже самый <b>дорогой.</b>\n\n"
-            f"{e(EMOJI_TOP)} Лидер недели по прокрутам получает награду.\n"
+            f"{e(EMOJI_TOP)} Лидер недели по прокрутам получает бесплатный NFT.\n"
+             f"{e(EMOJI_PIN)} Новости, турниры и пруфы победителей — "
+            f"<a href='https://t.me/giftdropnw'><b>в нашем канале</b></a>\n"
             f"{e(EMOJI_PIN)} Вся важная информация всегда в закрепе."
         )
 
@@ -410,7 +412,6 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
             gift_text = (
                 f"<a href='{gift['link']}'>{gift['name']}</a>\n"
-                f"<i>Осталось подарков: {len(GIFTS)}</i>"
             )
         else:
             gift_text = "<i>Подарки закончились. Свяжись с администратором.</i>"
@@ -452,5 +453,5 @@ app.add_handler(
     MessageHandler(filters.TEXT & ~filters.COMMAND & filters.ChatType.PRIVATE, tournament_steps)
 )
 
-print("✅ Banana BOT запущен")
+print("✅ GIFT DROP BOT запущен")
 app.run_polling(allowed_updates=["message"])
