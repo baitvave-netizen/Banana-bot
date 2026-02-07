@@ -50,7 +50,7 @@ bender_replies = [
 
 def build_top_spinners(top_n=5):
     if not users_spins:
-        return "<i>Никто нихуя не крутит. Я пью в одиночестве.</i>"
+        return "<b>Никто нихуя не крутит. Я пью в одиночестве.</b>"
 
     sorted_users = sorted(
         users_spins.items(),
@@ -59,15 +59,26 @@ def build_top_spinners(top_n=5):
     )[:top_n]
 
     text = (
-        "<i>Да вы заебали, сука, не даёте выпить…</i>\n\n"
-        "<b>🏆 ТОП-5 ИГРОКОВ ПО ПРОКРУТАМ:</b>\n"
+        "<b>"
+        "Да вы заебали, сука, не даёте выпить…\n\n"
+        "🏆 ТОП-5 ИГРОКОВ ПО ПРОКРУТАМ:\n"
     )
 
     for i, (uid, spins) in enumerate(sorted_users, start=1):
-        text += f"{i}. <code>{uid}</code> — <b>{spins}</b> прокрутов\n"
+        try:
+            user = users_cache.get(uid)
+            if user and user.username:
+                name = f"@{user.username}"
+            else:
+                name = str(uid)
+        except:
+            name = str(uid)
 
-    text += "\n<i>Теперь отъебитесь. Я бухаю.</i>"
+        text += f"{i}. {name} — {spins} прокрутов\n"
+
+    text += "\nТеперь отъебитесь. Я бухаю.</b>"
     return text
+
 
 
 async def bender_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
