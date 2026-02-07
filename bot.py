@@ -33,6 +33,7 @@ INFO_CHANNEL_ID = -1003823627924   # ← ВСТАВЬ ID КАНАЛА
 # ===== ХРАНИЛИЩА =====
 users_spins = {}
 last_joke = {}
+users_cache = {}
 GIFTS = []  # [{name, link}]
 tournament_draft = {}
 
@@ -488,6 +489,7 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     uid = msg.from_user.id
+    users_cache[uid] = msg.from_user
     users_spins.setdefault(uid, 0)
     users_spins[uid] += 1
 
