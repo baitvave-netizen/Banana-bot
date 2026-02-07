@@ -421,27 +421,8 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = msg.from_user.id
     users_spins.setdefault(uid, 0)
     users_spins[uid] += 1
-    
-    if users_spins[uid] % 15 == 0:
-        jokes = [
-        "<b>Ну ты блять упёртый… крути давай, сейчас точно повезёт!</b>",
-        "<b>Ты так крутишь, что автомату скоро станет неловко.</b>",
-        "<b>Ещё немного — и автомат сдастся первым.</b>",
-        "<b>Я вижу азарт в твоих глазах… продолжай.</b>",
-    ]
 
-    prev = last_joke.get(uid)
-    available = [j for j in jokes if j != prev]
-
-    joke = random.choice(available) if available else random.choice(jokes)
-    last_joke[uid] = joke
-
-    await msg.reply_text(
-        joke,
-        parse_mode="HTML"
-    )
-
-
+    # 👋 ПЕРВЫЙ ПРОКРУТ
     if users_spins[uid] == 1:
         text = (
             f"{e(EMOJI_LOGO)} <b>Добро пожаловать в GIFT DROP</b> "
@@ -454,13 +435,37 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"{e(EMOJI_BANK)} <b>Банк подарков</b> — {ADMIN_USERNAME}. "
             "Может выпасть любой подарок, даже самый <b>дорогой.</b>\n\n"
             f"{e(EMOJI_TOP)} Лидер недели по прокрутам получает бесплатный NFT.\n"
-             f"{e(EMOJI_PIN)} Новости, турниры и пруфы победителей — "
+            f"{e(EMOJI_PIN)} Новости, турниры и пруфы победителей — "
             f"<a href='https://t.me/giftdropnw'><b>в нашем канале</b></a>\n"
             f"{e(EMOJI_PIN)} Вся важная информация всегда в закрепе."
         )
 
-        await msg.reply_text(text, parse_mode="HTML", disable_web_page_preview=True)
+        await msg.reply_text(
+            text,
+            parse_mode="HTML",
+            disable_web_page_preview=True
+        )
         return
+
+    # 🤖 ШУТКИ КАЖДЫЕ 15 ПРОКРУТОВ
+    if users_spins[uid] % 15 == 0:
+        jokes = [
+            "<b>Ну ты блять упёртый… крути давай, сейчас точно повезёт!</b>",
+            "<b>Ты так крутишь, что автомату скоро станет неловко.</b>",
+            "<b>Ещё немного — и автомат сдастся первым.</b>",
+            "<b>Я вижу азарт в твоих глазах… продолжай.</b>",
+        ]
+
+        prev = last_joke.get(uid)
+        available = [j for j in jokes if j != prev]
+        joke = random.choice(available) if available else random.choice(jokes)
+        last_joke[uid] = joke
+
+        await msg.reply_text(
+            joke,
+            parse_mode="HTML"
+        )
+
 
     # ===== ДЖЕКПОТ =====
     if msg.dice.value == VALUE_777:
