@@ -48,6 +48,27 @@ def e(eid: str) -> str:
     return f'<tg-emoji emoji-id="{eid}">◻</tg-emoji>'
 
 # ===== УТИЛИТЫ =====
+# ===== УТИЛИТЫ =====
+def extract_gift_name(link: str) -> str:
+    slug = link.rstrip("/").split("/")[-1]
+    slug = slug.replace("-", " ")
+    slug = re.sub(r"(\D)(\d+)$", r"\1 #\2", slug)
+    return slug.strip()
+
+
+def load_gifts():
+    global GIFTS
+    if GIFTS_FILE.exists():
+        GIFTS = json.loads(GIFTS_FILE.read_text(encoding="utf-8"))
+
+
+def save_gifts():
+    GIFTS_FILE.write_text(
+        json.dumps(GIFTS, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+
 def log_winner(user, gift):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     line = (
