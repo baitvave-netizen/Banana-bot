@@ -32,6 +32,7 @@ INFO_CHANNEL_ID = -1003823627924   # ← ВСТАВЬ ID КАНАЛА
 
 # ===== ХРАНИЛИЩА =====
 users_spins = {}
+last_joke = {}
 GIFTS = []  # [{name, link}]
 tournament_draft = {}
 
