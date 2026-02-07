@@ -96,27 +96,31 @@ def log_winner(user, gift):
 
 
 async def post_winner_to_channel(bot, user, gift):
-    # ссылка на пользователя
     if user.username:
-        user_link = f"<a href='https://t.me/{user.username}'>@{user.username}</a>"
+        user_text = f"@{user.username}"
+        user_url = f"https://t.me/{user.username}"
     else:
-        user_link = f"<a href='tg://user?id={user.id}'>Победитель</a>"
+        user_text = "Победитель"
+        user_url = f"tg://user?id={user.id}"
 
     text = (
-        f"🎰 <b>ДЖЕКПОТ ВЫПАЛ!</b>\n\n"
-        f"<b>Выигрыш:</b>\n"
-        f"🎁 <a href='{gift['link']}'><b>{gift['name']}</b></a>\n\n"
-        f"<b>Победитель:</b> {user_link}\n\n"
-        f"<b>Банк подарков:</b> {ADMIN_USERNAME}\n\n"
-        f" <i>Крути 🎰 — следующий пост может быть про тебя</i>"
+        "🎰 <b>ДЖЕКПОТ ВЫПАЛ!</b>\n\n"
+        "🎁 <b>Выигрыш:</b>\n"
+        f"{gift['name']}\n"
+        f" {gift['link']}\n\n"
+        " <b>Победитель:</b>\n"
+        f"{user_text}\n"
+        f" {user_url}\n\n"
+        f" <b>Банк подарков:</b> {ADMIN_USERNAME}\n\n"
+        "🎰 Крути — следующий пост может быть про тебя"
     )
 
     await bot.send_message(
         chat_id=INFO_CHANNEL_ID,
         text=text,
-        parse_mode="HTML",
         disable_web_page_preview=False
     )
+
 
 
     # ===== УТИЛИТЫ ТУРНИРА =====
