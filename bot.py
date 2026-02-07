@@ -103,12 +103,12 @@ async def post_winner_to_channel(bot, user, gift):
         user_link = f"<a href='tg://user?id={user.id}'>Победитель</a>"
 
     text = (
-        f"{e(EMOJI_7)}{e(EMOJI_7)}{e(EMOJI_7)} <b>ДЖЕКПОТ ВЫПАЛ!</b>\n\n"
-        f"{e(EMOJI_TOP)} <b>Победитель:</b> {user_link}\n\n"
-        f"{e(EMOJI_NFT)} <b>Выигрыш:</b>\n"
+        f"🎰 <b>ДЖЕКПОТ ВЫПАЛ!</b>\n\n"
+        f"<b>Выигрыш:</b>\n"
         f"🎁 <a href='{gift['link']}'><b>{gift['name']}</b></a>\n\n"
-        f"{e(EMOJI_BANK)} <b>Банк подарков:</b> {ADMIN_USERNAME}\n\n"
-        f"{e(EMOJI_PIN)} <i>Крути 🎰 — следующий пост может быть про тебя</i>"
+        f"<b>Победитель:</b> {user_link}\n\n"
+        f"<b>Банк подарков:</b> {ADMIN_USERNAME}\n\n"
+        f" <i>Крути 🎰 — следующий пост может быть про тебя</i>"
     )
 
     await bot.send_message(
