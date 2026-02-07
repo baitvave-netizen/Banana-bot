@@ -1,3 +1,4 @@
+from telegram import MessageEntity
 import random
 import re
 import json
@@ -46,6 +47,15 @@ EMOJI_PIN = "5397782960512444700"
 
 def e(eid: str) -> str:
     return f'<tg-emoji emoji-id="{eid}">◻</tg-emoji>'
+
+def ce(offset: int, length: int, emoji_id: str):
+    return MessageEntity(
+        type=MessageEntity.CUSTOM_EMOJI,
+        offset=offset,
+        length=length,
+        custom_emoji_id=emoji_id
+    )
+
 
 # ===== УТИЛИТЫ =====
 # ===== УТИЛИТЫ =====
