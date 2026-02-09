@@ -519,7 +519,7 @@ async def handle_dice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         f"{e(EMOJI_PIN)} Вся важная информация всегда в закрепе.\n"
         f"{SOFT_GAP}\n"
-        "<i>Если подарок не пришёл автоматически — сообщите об этом @anonveil</i>"
+        "<i>Если подарок не пришёл автоматически — сообщите об этом нам @anonveil</i>"
     )
 
         await msg.reply_text(
